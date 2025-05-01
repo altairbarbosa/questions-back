@@ -1,0 +1,16 @@
+# Ignorar dependências
+node_modules/
+
+# Ignorar variáveis sensíveis
+.env
+
+# Ignorar arquivos de log e cache
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.cache
+
+# Ignorar build (caso use TS, Vite ou outros)
+dist/
+build/
