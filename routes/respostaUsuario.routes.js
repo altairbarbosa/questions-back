@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const controller = require('../controllers/respostaUsuario.controller');
-const autenticar = require('../middlewares/auth.middleware');
+const respostasController = require("../controllers/resposta.controller");
+const authMiddleware = require("../middlewares/auth.middleware");
 
-router.post('/', autenticar, controller.responder);
-router.get('/historico', autenticar, controller.historico);
+router.post("/", authMiddleware, respostasController.salvarRespostasUsuario);
+router.get("/resultado/:questionario_id", authMiddleware, respostasController.resultado);
 
 module.exports = router;
