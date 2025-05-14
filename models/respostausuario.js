@@ -18,19 +18,43 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'resposta_id',
         as: 'resposta'
       });
+
+      RespostaUsuario.belongsTo(models.Questionario, {
+        foreignKey: 'questionario_id',
+        as: 'questionario'
+      });
     }
   }
 
   RespostaUsuario.init({
-    usuario_id: DataTypes.INTEGER,
-    pergunta_id: DataTypes.INTEGER,
-    resposta_id: DataTypes.INTEGER,
-    data_resposta: DataTypes.DATE,
-    correta: DataTypes.BOOLEAN
+    usuario_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    pergunta_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    resposta_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    questionario_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    data_resposta: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    correta: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   }, {
     sequelize,
     modelName: 'RespostaUsuario',
-    tableName: 'respostas_usuario'
+    tableName: 'respostas_usuarios'
   });
 
   return RespostaUsuario;

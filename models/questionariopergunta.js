@@ -17,9 +17,18 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   QuestionarioPergunta.init({
-    questionario_id: DataTypes.INTEGER,
-    pergunta_id: DataTypes.INTEGER,
-    ordem: DataTypes.INTEGER
+    questionario_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    pergunta_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    ordem: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }
   }, {
     sequelize,
     modelName: 'QuestionarioPergunta',

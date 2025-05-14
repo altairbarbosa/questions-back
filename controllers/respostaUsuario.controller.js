@@ -47,5 +47,43 @@ module.exports = {
       console.error(err);
       return res.status(500).json({ erro: 'Erro ao carregar histórico' });
     }
+  },
+
+  async responderEmLote(req, res) {
+    try {
+      const usuario_id = req.usuario?.id || 1;
+      const { questionario_id, respostas } = req.body;
+
+      console.log("Recebido:", { usuario_id, questionario_id, respostas });
+
+      if (!Array.isArray(respostas) || respostas.length === 0) {
+        return res.status(400).json({ erro: 'Nenhuma resposta fornecida' });
+      }
+
+      const registros = [];
+
+      for (const r of respostas) {
+        const resposta = await Resposta.findByPk(r.alternativa_id);
+        if (!resposta || resposta.pergunta_id !== Number(r.pergunta_id)) {
+          return res.status(400).json({ erro: `Resposta inválida para a pergunta ${r.pergunta_id}` });
+        }
+
+        registros.push({
+          usuario_id,
+          pergunta_id: r.pergunta_id,
+          resposta_id: r.alternativa_id,
+          questionario_id,
+          data_resposta: new Date(),
+          correta: resposta.correta
+        });
+      }
+
+      await RespostaUsuario.bulkCreate(registros);
+
+      return res.status(201).json({ mensagem: 'Respostas registradas com sucesso' });
+    } catch (err) {
+      console.error('Erro ao registrar respostas em lote:', err);
+      return res.status(500).json({ erro: 'Erro ao registrar respostas' });
+    }
   }
 };

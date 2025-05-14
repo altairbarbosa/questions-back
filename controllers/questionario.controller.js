@@ -172,5 +172,29 @@ module.exports = {
       console.error(err);
       return res.status(500).json({ erro: 'Erro ao criar questionário completo' });
     }
+  },
+
+  async verCompleto(req, res) {
+    try {
+      const { id } = req.params;
+
+      const questionario = await Questionario.findByPk(id, {
+        include: [
+          {
+            association: 'perguntas',
+            include: [{ model: Resposta, as: 'respostas' }]
+          }
+        ]
+      });
+
+      if (!questionario) {
+        return res.status(404).json({ erro: 'Questionário não encontrado' });
+      }
+
+      return res.json(questionario);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ erro: 'Erro ao buscar questionário completo' });
+    }
   }
 };
